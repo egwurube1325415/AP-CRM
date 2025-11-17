@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Aple CRM – Cold Calling & Email</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      
+        <meta name="theme-color" content="#111827" />
+        <link rel="manifest" href="manifest.json" />
+      
+        <link rel="stylesheet" href="style.css" />
+      </head>
+      
+<body>
+  <header>
+    <h1>Aple CRM</h1>
+    <p>Cold calls & personalized emails for Aple Property Manager</p>
+  </header>
+
+  <main>
+    <section id="call-panel">
+      <h2>Cold Call Queue</h2>
+      <div id="current-contact">
+        <p>No contact loaded yet.</p>
+      </div>
+      <div class="call-actions">
+        <button id="next-contact-btn">Next Contact</button>
+        <button id="mark-interested-btn">Interested</button>
+        <button id="mark-followup-btn">Follow-up later</button>
+        <button id="mark-notinterested-btn">Not interested</button>
+        <input id="followup-date" type="date" />
+      </div>
+    </section>
+
+    <section id="email-panel">
+      <h2>Bulk Email (Personalized)</h2>
+      <label>
+        Subject:
+        <input id="email-subject" type="text" placeholder="Intro from Aple Property Manager">
+      </label>
+      <label>
+        Email template (supports {{firstName}} and {{lastName}}):
+        <textarea id="email-template" rows="6">
+Hi {{firstName}},
+
+My name is [Your Name] with Aple Property Manager in Houston.
+
+We specialize in rapid re-housing and supportive housing for justice-involved and vulnerable residents. 
+I'd love to connect and see how we can support your clients.
+
+Best regards,
+[Your Name]
+Aple Property Manager
+        </textarea>
+      </label>
+
+      <button id="send-email-selected-btn">Send to selected contacts</button>
+      <p class="hint">Use the checkboxes in the contact list below to pick who gets this email.</p>
+    </section>
+
+    <section id="analytics-panel">
+        <h2>Dashboard</h2>
+        <div id="stats-cards">
+          <div class="stat-card">
+            <div class="stat-label">Total contacts</div>
+            <div class="stat-value" id="stat-total">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">New</div>
+            <div class="stat-value" id="stat-new">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Interested</div>
+            <div class="stat-value" id="stat-interested">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Follow-up</div>
+            <div class="stat-value" id="stat-followup">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Not interested</div>
+            <div class="stat-value" id="stat-notinterested">0</div>
+          </div>
+        </div>
+      
+        <h3>Upcoming follow-ups</h3>
+        <ul id="upcoming-followups"></ul>
+      </section>
+      
+      <section id="contacts-panel">
+        <h2>Contacts</h2>
+      
+        <div id="contacts-filters">
+          <input
+            type="text"
+            id="search-text"
+            placeholder="Search name, email, or phone"
+          />
+          <select id="status-filter">
+            <option value="">All statuses</option>
+            <option value="New">New</option>
+            <option value="Interested">Interested</option>
+            <option value="Follow-up">Follow-up</option>
+            <option value="Not Interested">Not Interested</option>
+          </select>
+          <label>
+            <input type="checkbox" id="followup-due-filter" />
+            Only follow-ups due today or overdue
+          </label>
+        </div>
+      
+        <table id="contacts-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="select-all" /></th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Status</th>
+              <th>Next Follow-Up</th>
+              <th>Call</th>
+            </tr>
+          </thead>
+          <tbody id="contacts-body">
+            <!-- filled by JS -->
+          </tbody>
+        </table>
+      </section>
+      
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

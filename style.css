@@ -1,0 +1,172 @@
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f5f5f7;
+  }
+  
+  header {
+    background: #111827;
+    color: #f9fafb;
+    padding: 1rem 1.5rem;
+  }
+  
+  header h1 {
+    margin: 0;
+  }
+  
+  main {
+    display: grid;
+    grid-template-columns: 1.1fr 1.3fr;
+    grid-template-rows: auto auto;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+  }
+  
+  section {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(15, 23, 42, 0.1);
+  }
+  
+  #contacts-panel {
+    grid-column: 1 / span 2;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  input[type="text"],
+  input[type="date"],
+  textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    box-sizing: border-box;
+    margin-top: 0.25rem;
+    font-family: inherit;
+  }
+  
+  button {
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    border: none;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+    margin-right: 0.5rem;
+  }
+  
+  button:hover {
+    background: #1d4ed8;
+  }
+  
+  #contacts-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  #contacts-table th,
+  #contacts-table td {
+    padding: 0.4rem 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.9rem;
+  }
+  
+  #contacts-table th {
+    text-align: left;
+    background: #f9fafb;
+  }
+  
+  .hint {
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+  }
+  
+  .call-actions {
+    margin-top: 0.5rem;
+  }
+  main {
+    display: grid;
+    grid-template-columns: 1.1fr 1.3fr;
+    grid-template-rows: auto auto auto;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+  }
+  
+  #analytics-panel {
+    grid-column: 1 / span 2;
+  }
+  
+  #contacts-panel {
+    grid-column: 1 / span 2;
+  }
+  
+  #contacts-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    align-items: center;
+  }
+  
+  #contacts-filters input[type="text"] {
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  #contacts-filters select {
+    min-width: 140px;
+  }
+  
+  #contacts-filters label {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+  }
+  
+  #contacts-filters input[type="checkbox"] {
+    margin-right: 0.3rem;
+  }
+  
+  #stats-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .stat-card {
+    background: #111827;
+    color: #f9fafb;
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+    min-width: 120px;
+  }
+  
+  .stat-label {
+    font-size: 0.8rem;
+    opacity: 0.8;
+  }
+  
+  .stat-value {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  
+  #upcoming-followups {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+    font-size: 0.9rem;
+  }
+  
+  #upcoming-followups li {
+    margin-bottom: 0.25rem;
+  }
+  
