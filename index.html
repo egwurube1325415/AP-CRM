@@ -58,6 +58,25 @@ Aple Property Manager
       <p class="hint">Use the checkboxes in the contact list below to pick who gets this email.</p>
     </section>
 
+    <section id="sms-panel">
+        <h2>Bulk SMS (Personalized)</h2>
+        <label>
+          SMS template (supports {{firstName}} and {{lastName}}):
+          <textarea id="sms-template" rows="4">
+  Hi {{firstName}}, this is [Your Name] with Aple Property Manager.
+  
+  We provide supportive housing and rapid re-housing in Houston.
+  Reply here if you're open to a quick call.
+          </textarea>
+        </label>
+  
+        <button id="send-sms-selected-btn">Send SMS to selected contacts</button>
+        <p class="hint">
+          Uses selected contacts below. Only numbers with a phone field will get a text.
+        </p>
+      </section>
+  
+
     <section id="analytics-panel">
         <h2>Dashboard</h2>
         <div id="stats-cards">
@@ -86,7 +105,39 @@ Aple Property Manager
         <h3>Upcoming follow-ups</h3>
         <ul id="upcoming-followups"></ul>
       </section>
-      
+      <section id="analytics-panel">
+        ...
+      </section>
+  
+      <!-- 🔹 NEW: AI Assistant panel -->
+      <section id="ai-panel">
+        <h2>AI Assistant</h2>
+        <p class="hint">
+          Paste call notes or let the assistant draft a follow-up email. It will
+          use the currently loaded contact when possible.
+        </p>
+  
+        <label>
+          Call / meeting notes
+          <textarea id="ai-notes" rows="5"
+            placeholder="Type or paste notes from your call here…"></textarea>
+        </label>
+  
+        <div class="ai-actions">
+          <button id="ai-summarize-btn">Summarize notes</button>
+          <button id="ai-nextsteps-btn">Suggest next steps</button>
+          <button id="ai-email-btn">Draft follow-up email</button>
+        </div>
+  
+        <div id="ai-output" class="ai-output">
+          <p class="hint">AI suggestions will appear here.</p>
+        </div>
+      </section>
+  
+      <section id="contacts-panel">
+        ...
+      </section>
+  
       <section id="contacts-panel">
         <h2>Contacts</h2>
       

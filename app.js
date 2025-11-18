@@ -68,6 +68,10 @@ function setupEventHandlers() {
   document.getElementById('send-email-selected-btn')
     .addEventListener('click', sendSelectedEmails);
 
+     // 🔹 NEW: bulk SMS
+  document.getElementById('send-sms-selected-btn')
+  .addEventListener('click', sendSelectedSms);
+
   document.getElementById('select-all')
     .addEventListener('change', (e) => {
       const checked = e.target.checked;
@@ -97,6 +101,16 @@ function setupEventHandlers() {
       renderContactsTable();
       updateAnalytics();
     });
+      // AI assistant buttons
+  document.getElementById('ai-summarize-btn')
+  .addEventListener('click', () => runAiAssistant('summary'));
+
+document.getElementById('ai-nextsteps-btn')
+  .addEventListener('click', () => runAiAssistant('nextSteps'));
+
+document.getElementById('ai-email-btn')
+  .addEventListener('click', () => runAiAssistant('emailDraft'));
+
 }
 function getFilteredContacts() {
   const todayStr = new Date().toISOString().slice(0, 10);
@@ -283,6 +297,14 @@ async function updateCurrentStatus(status, followDate = null) {
   updateAnalytics();
 }
 
+function escapeHtml(str) {
+  return (str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+
 // === BULK EMAIL ===
 async function sendSelectedEmails() {
   const subject = document.getElementById('email-subject').value.trim();
@@ -320,5 +342,107 @@ async function sendSelectedEmails() {
   } catch (err) {
     console.error(err);
     alert('Could not send emails. Check your Apps Script deployment or try again.');
+  }
+}
+// === BULK SMS ===
+async function sendSelectedSms() {
+  const template = document.getElementById('sms-template').value;
+
+  const selected = Array.from(document.querySelectorAll('.contact-checkbox'))
+    .filter(cb => cb.checked)
+    .map(cb => contacts[parseInt(cb.dataset.index, 10)])
+    .filter(c => c.phone); // only contacts with phone
+
+  if (!template || !selected.length) {
+    alert('Need an SMS template and at least one contact with a phone number.');
+    return;
+  }
+
+  if (!confirm(`Send this SMS to ${selected.length} contacts?`)) return;
+
+  try {
+    await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'sendSms',
+        template,
+        contacts: selected.map(c => ({
+          id: c.id,
+          firstName: c.firstName,
+          lastName: c.lastName,
+          phone: c.phone
+        }))
+      })
+    });
+
+    alert('SMS messages sent (or queued by Apps Script).');
+  } catch (err) {
+    console.error(err);
+    alert('Could not send SMS. Check Apps Script logs / Twilio settings.');
+  }
+}
+
+async function runAiAssistant(mode) {
+  const notesEl = document.getElementById('ai-notes');
+  const outputEl = document.getElementById('ai-output');
+
+  const notes = (notesEl.value || '').trim();
+  const current = (currentIndex >= 0 && currentIndex < contacts.length)
+    ? contacts[currentIndex]
+    : null;
+
+  // For summary / next steps, we really want some notes
+  if (!notes && (mode === 'summary' || mode === 'nextSteps')) {
+    alert('Add some call notes first so the assistant has context.');
+    return;
+  }
+
+  outputEl.innerHTML = '<p>Thinking…</p>';
+
+  try {
+    const body = {
+      action: 'aiAssist',
+      mode,
+      notes,
+      contact: current ? {
+        id: current.id,
+        firstName: current.firstName,
+        lastName: current.lastName,
+        email: current.email,
+        phone: current.phone,
+        status: current.status,
+        nextFollowUp: current.nextFollowUp
+      } : null
+    };
+
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify(body)
+    });
+
+    if (!res.ok) {
+      throw new Error('AI request failed: ' + res.status);
+    }
+
+    const data = await res.json();
+    // Expecting { text: "..." } from the backend
+    const text = data.text || data.summary || data.emailDraft || data.nextSteps || '';
+
+    if (!text) {
+      outputEl.innerHTML = '<p>No suggestion returned.</p>';
+      return;
+    }
+
+    // Show in the AI output box
+    outputEl.innerHTML = '<pre>' + escapeHtml(text) + '</pre>';
+
+    // If we asked for an email draft, also drop it into the email template box
+    if (mode === 'emailDraft') {
+      const templateEl = document.getElementById('email-template');
+      templateEl.value = text;
+    }
+  } catch (err) {
+    console.error(err);
+    outputEl.innerHTML = '<p style="color:#b91c1c;">Error talking to assistant. Check your Apps Script logs.</p>';
   }
 }
